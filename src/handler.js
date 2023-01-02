@@ -3,6 +3,7 @@ const {
 } = require('nanoid');
 
 const books = require('./books');
+var newBooks = [];
 
 const addBookHandler = (request, h) => {
     const {
@@ -86,12 +87,23 @@ const addBookHandler = (request, h) => {
 };
 
 
-const getAllBooksHandler = () => ({
-    status: 'success',
-    data: {
-        books: books
-    },
-});
+
+const getAllBooksHandler = () => {
+    books.forEach(book => {
+        newBooks.push({
+            id: book.id,
+            name: book.name,
+            publisher: book.publisher
+        })
+    })
+
+    return {
+        status: 'success',
+        data: {
+            book: newBooks
+        },
+    };
+};
 
 
 const getBookByIdHandler = (request, h) => {
@@ -137,7 +149,7 @@ const editBookByIdHandler = (request, h) => {
     if (!name) {
         const response = h.response({
             status: 'fail',
-            message: 'Gagal menambahkan buku. Mohon isi nama buku',
+            message: 'Gagal memperbarui buku. Mohon isi nama buku',
         });
         response.code(400);
         return response;
@@ -146,7 +158,7 @@ const editBookByIdHandler = (request, h) => {
     if (readPage > pageCount) {
         const response = h.response({
             status: 'fail',
-            message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+            message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
         });
         response.code(400);
         return response;
