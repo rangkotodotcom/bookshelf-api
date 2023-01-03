@@ -100,7 +100,7 @@ const getAllBooksHandler = () => {
     return {
         status: 'success',
         data: {
-            book: newBooks
+            books: newBooks
         },
     };
 };
